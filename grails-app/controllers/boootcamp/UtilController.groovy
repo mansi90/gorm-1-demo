@@ -12,54 +12,76 @@ class UtilController {
     }
 
     def getDemo() {
-        println Book.get(1)
-        println Book.getAll([1, 2, 3])
-        render("Done")
+        render Book.get(1)
+        render "<br/>"
+        render Book.getAll([1, 2, 3])
     }
 
     def validate() {
         Book book = new Book()
         book.validate()
         book.errors.allErrors.each {
-            println it
+            render it
+            render "<br/>"
+            render "<br/>"
         }
-        render("Done")
     }
 
     def addTo() {
-        Author author = new Author(name: "Ankur")
-
+        Author author = Author.get(1)
+        render "<br/><br/>Before save <br/><br/>"
+        author.books.each {
+            render "${it}<br/><br/>"
+        }
         author.addToBooks(new Book(name: "Grails"))
-        render(author.save())
+        author.save()
+        render "<br/><br/>After save <br/><br/>"
+        author.books.each {
+            render "${it}<br/><br/>"
+        }
     }
 
     def removeFrom() {
         Author author = Author.get(1)
-
-        println Book.list()
-        Book book = Book.get(1)
-        author.removeFromBooks(book)
-        author.save(flush: true, failOnError: true)
-        render(Book.list())
+        render "<br/><br/>Before save ${Book.count()}<br/><br/>"
+        author.books.each {
+            render "${it}<br/><br/>"
+        }
+        Book book = author.books[0]
+        render "Removing Book ${book}"
+        if (book) {
+            author.removeFromBooks(book)
+            author.save(flush: true, failOnError: true)
+        }
+        render "<br/><br/>After save ${Book.count()}<br/><br/>"
+        author.books.each {
+            render "${it}<br/><br/>"
+        }
     }
 
-    def findBy(){
-        Author.findByName("Ankur")
+    def findBy(String name) {
+        render Author.findByName(name)
         render(Book.findAllByNameInList(["Book-1", "Book-2"]))
     }
 
-    def findOrSave(){
-        println Book.findOrCreateByName("Grails")
+    def findOrSave() {
+        render Book.findOrCreateByName("Grails")
         Book.findOrSaveByNameAndAuthor("Groovy", Author.read(1))
-        render ("Done")
+        render("Done")
     }
 
-    def pagination(){
-        render(Book.findAllByNameLike("Book%", [max:5, offset:2]))
+    def pagination(String name) {
+        Book.findAllByNameLike("${name}%").each {
+            render "${it} <br/><br/>"
+        }
+        render "------------Paginated data---------------<br/> <br/>"
+        Book.findAllByNameLike("${name}%", [max: 5, offset: 2]).each {
+            render "${it} <br/><br/>"
+
+        }
     }
 
-    def hql(){
-        Book.find("from Book where  name=:name title=:title",[name:'The Stand', title:"some value"])
+    def hql() {
+        render Book.find("from Book where name=:name", [name: 'The Stand'])
     }
-
 }

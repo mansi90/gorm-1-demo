@@ -7,5 +7,5 @@ class Author {
     static constraints = {
     }
 
-    static hasMany = [books:Book]
+    static hasMany = [books: Book]
 }
