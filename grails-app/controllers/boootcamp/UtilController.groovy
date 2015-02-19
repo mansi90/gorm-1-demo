@@ -5,10 +5,10 @@ import bootcamp.Book
 
 class UtilController {
 
-    def list() {
-//        List books = Book.list(max:2, offset: 1)
-        List bookList = Book.list()
-        render(bookList)
+    def list(Integer offset, Integer max) {
+        List bookList = Book.list(max: max, offset: offset)
+        // List bookList = Book.list()
+        render(bookList.id)
     }
 
     def getDemo() {
@@ -43,7 +43,7 @@ class UtilController {
 
     def removeFrom() {
         Author author = Author.get(1)
-        render "<br/><br/>Before save ${Book.count()}<br/><br/>"
+        render "<br/><br/>Before save ${Book.count()}-- ${author.books.size()}<br/><br/>"
         author.books.each {
             render "${it}<br/><br/>"
         }
@@ -53,7 +53,7 @@ class UtilController {
             author.removeFromBooks(book)
             author.save(flush: true, failOnError: true)
         }
-        render "<br/><br/>After save ${Book.count()}<br/><br/>"
+        render "<br/><br/>After save ${Book.count()}-- ${author.books.size()}<br/><br/>"
         author.books.each {
             render "${it}<br/><br/>"
         }
