@@ -4,9 +4,10 @@ import bootcamp.Book
 class BootStrap {
 
     def init = { servletContext ->
-        Author author = new Author(name: "Ankur")
+        Author author = new Author(name: "Some Author")
         50.times {
-            author.addToBooks(new Book(name: "Book-${it}"))
+            Date date = new Date() - 50 + it
+            author.addToBooks(new Book(name: "Book-${it}", date: date))
         }
         author.save()
         List<Author> authors = createAuthors()

@@ -3,6 +3,7 @@ package bootcamp
 class Book {
 
     String name
+    Date date = new Date()
 
     static constraints = {
     }
