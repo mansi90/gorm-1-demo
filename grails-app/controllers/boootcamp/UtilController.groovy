@@ -29,15 +29,15 @@ class UtilController {
 
     def addTo() {
         Author author = Author.get(1)
-        render "<br/><br/>Before save <br/><br/>"
+        render "<br/><br/>Before save : "+author.books.size()+"<br/><br/> "
         author.books.each {
-            render "${it}<br/><br/>"
+            render "<br/>${it}"
         }
         author.addToBooks(new Book(name: "Grails"))
         author.save()
-        render "<br/><br/>After save <br/><br/>"
+        render "<br/><br/>After save : "+author.books.size()+"<br/><br/> "
         author.books.each {
-            render "${it}<br/><br/>"
+            render "<br/>${it}"
         }
     }
 
@@ -45,7 +45,7 @@ class UtilController {
         Author author = Author.get(1)
         render "<br/><br/>Before save ${Book.count()}-- ${author.books.size()}<br/><br/>"
         author.books.each {
-            render "${it}<br/><br/>"
+            render "<br/>${it}"
         }
         Book book = author.books[0]
         render "Removing Book ${book}"
@@ -55,19 +55,18 @@ class UtilController {
         }
         render "<br/><br/>After save ${Book.count()}-- ${author.books.size()}<br/><br/>"
         author.books.each {
-            render "${it}<br/><br/>"
+            render "<br/>${it}"
         }
     }
 
     def findBy(String name) {
-        render Author.findByName(name)
+        render Author.findByName(name)+"<br/>"
         render(Book.findAllByNameInList(["Book-1", "Book-2"]))
     }
 
     def findOrSave() {
         render Book.findOrCreateByName("Grails")
-        Book.findOrSaveByNameAndAuthor("Groovy", Author.read(1))
-        render("Done")
+        render("<br/>Done")
     }
 
     def pagination(String name) {
