@@ -91,7 +91,7 @@ class DemoController {
         render "countByName >> " + Book.countByName("Grails")
 
         Date firstDate = new Date() - 10, secondDate = new Date()
-        render "<br/<br/>countByName >> " + Book.countByDateBetween(firstDate, secondDate)
+        render "<br/<br/>countByDateBetween >> " + Book.countByDateBetween(firstDate, secondDate)
 
         render "<br/<br/>count() >> " + Book.count()
     }
